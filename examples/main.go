@@ -7,18 +7,31 @@ import (
 )
 
 func main() {
-	db, err := leveltable.NewLDBDatabase("mydb.db", 1000, 1000)
+	db, err := leveltable.NewLDBDatabase("leveltable.db", 1000, 1000)
 	if err != nil {
 		panic(err)
 	}
-	mytable := leveltable.NewTable(db, "mytable")
-
-	mykey := []byte("my key")
-	mytable.Put(mykey, []byte("my data"))
-
-	data, err := mytable.Get(mykey)
-	if err != nil {
-		panic(err)
+	table1 := leveltable.NewTable(db, "table1")
+	for i := 'A'; i <= 'E'; i++ {
+		table1.Put([]byte(string(i)), []byte("table 1 data "+string(i)))
 	}
-	fmt.Printf("data: %s\n", data)
+
+	table2 := leveltable.NewTable(db, "table2")
+	for i := 'F'; i < 'J'; i++ {
+		table2.Put([]byte(string(i)), []byte("table 2 data "+string(i)))
+	}
+	table2.Put([]byte("my-prefix 123"), []byte("table2 with prefix key data 123"))
+
+	fmt.Println("--------------table1-------------------------")
+	for it := table1.NewIterator(); it.Next(); {
+		fmt.Printf("%s\n", it.Value())
+	}
+	fmt.Println("--------------table2-------------------------")
+	for it := table2.NewIterator(); it.Next(); {
+		fmt.Printf("%s\n", it.Value())
+	}
+	fmt.Println("--------table2 with prefix key---------------")
+	for it := table2.NewPrefixIterator("my-prefix"); it.Next(); {
+		fmt.Printf("%s\n", it.Value())
+	}
 }

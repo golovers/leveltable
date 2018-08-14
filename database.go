@@ -13,6 +13,7 @@ import (
 	"github.com/syndtr/goleveldb/leveldb/filter"
 	"github.com/syndtr/goleveldb/leveldb/iterator"
 	"github.com/syndtr/goleveldb/leveldb/opt"
+	"github.com/syndtr/goleveldb/leveldb/util"
 
 	gometrics "github.com/rcrowley/go-metrics"
 )
@@ -123,6 +124,10 @@ func (db *LDBDatabase) Delete(key []byte) error {
 
 func (db *LDBDatabase) NewIterator() iterator.Iterator {
 	return db.db.NewIterator(nil, nil)
+}
+
+func (db *LDBDatabase) NewPrefixIterator(prefix string) iterator.Iterator {
+	return db.db.NewIterator(util.BytesPrefix([]byte(prefix)), nil)
 }
 
 func (db *LDBDatabase) Close() {
@@ -311,7 +316,11 @@ func (dt *table) Delete(key []byte) error {
 }
 
 func (dt *table) NewIterator() iterator.Iterator {
-	return dt.db.NewIterator()
+	return dt.db.NewPrefixIterator(dt.prefix)
+}
+
+func (dt *table) NewPrefixIterator(prefix string) iterator.Iterator {
+	return dt.db.NewPrefixIterator(dt.prefix + prefix)
 }
 
 func (dt *table) Close() {
