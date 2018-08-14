@@ -50,7 +50,6 @@ table 2 data F
 table 2 data G
 table 2 data H
 table 2 data I
-table 2 data J
 table2 with prefix key data 123
 --------table2 with prefix key---------------
 table2 with prefix key data 123
