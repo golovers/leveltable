@@ -21,6 +21,8 @@ type Database interface {
 	NewBatch() Batch
 	NewIterator() iterator.Iterator
 	NewPrefixIterator(prefix string) iterator.Iterator
+	Table(name string) Database
+	NewTableBatch(name string) Batch
 }
 
 // Batch is a write-only database that commits changes to its host database
