@@ -6,7 +6,7 @@ leveltable is a wrapper of leveldb which supports table, batches and some other 
 
 Code:
 ```go
-db, err := leveltable.NewLevelTableDB("leveltable.db", 1000, 10)
+db, err := leveltable.New("leveltable.db", 1000, 10)
 if err != nil {
 	panic(err)
 }
