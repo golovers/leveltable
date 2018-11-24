@@ -17,8 +17,8 @@ type ldbDatabase struct {
 	db *leveldb.DB // LevelDB instance
 }
 
-// NewLevelTableDB returns a LevelDB wrapped object.
-func NewLevelTableDB(file string, cache int, handles int) (Database, error) {
+// New returns a LevelDB wrapped object.
+func New(file string, cache int, handles int) (Database, error) {
 	// Ensure we have some minimal caching and file guarantees
 	if cache < 16 {
 		cache = 16

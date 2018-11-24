@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	db, err := leveltable.NewLevelTableDB("leveltable.db", 1000, 1000)
+	db, err := leveltable.New("leveltable.db", 1000, 1000)
 	if err != nil {
 		panic(err)
 	}
